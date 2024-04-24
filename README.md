@@ -22,6 +22,10 @@ Windows Terminal's DECRQCRA is turned off by default, reasonably so as it allows
 the terminal. I believe (but am not sure) that the `kitty` and `alacritty` terminals support both DECRQCRA and
 synchronized updates; if I could test them I would add CMake options for choosing the target environment.
 
+additionally, the Windows version uses `DwmFlush` to do a small frame wait, rather than deal with the 15ms Windows
+scheduler resolution. due to Linux scheduling being higher-resolution, this could probably be replaced with some sort of
+sleep.
+
 ## DECCARA
 
 DECCARA does not support changing colors: it supports a finite subset of SGI commands, of which the only one even
