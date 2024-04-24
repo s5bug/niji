@@ -6,9 +6,9 @@ based on [the old X68000 niji](https://twitter.com/kata68k/status/17827800991480
 
 ## building
 
-build via MinGW CMake. release mode via `-DCMAKE_BUILD_TYPE=Release`.
+build via CMake. release mode via `-DCMAKE_BUILD_TYPE=Release`.
 
-cut the binary size in 4 by `strip`ping it afterward.
+if building via MinGW cut the binary size in 4 by `strip`ping it afterward.
 
 ## linux when?
 

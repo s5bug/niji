@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#define NOMINMAX
 #include <Windows.h>
 #include <dwmapi.h>
 
@@ -24,9 +25,9 @@ bool is_empty_wchar(wchar_t ch) {
 }
 
 bool is_empty(
-        std::uint16_t cell_x,
-        std::uint16_t cell_y,
-        std::uint16_t width,
+        std::uint32_t cell_x,
+        std::uint32_t cell_y,
+        std::uint32_t width,
         const std::vector<wchar_t>& screen
         ) {
     size_t left_coord = (cell_y * width) + (2 * cell_x);
@@ -40,10 +41,10 @@ bool is_empty(
 }
 
 bool in_circle(
-        std::uint16_t cell_x,
-        std::uint16_t cell_y,
-        std::uint16_t center_x,
-        std::uint16_t center_y,
+        std::uint32_t cell_x,
+        std::uint32_t cell_y,
+        std::uint32_t center_x,
+        std::uint32_t center_y,
         std::uint32_t rad) {
     std::uint32_t h_distance = (cell_x >= center_x) ? cell_x - center_x : center_x - cell_x;
     std::uint32_t v_distance = (cell_y >= center_y) ? cell_y - center_y : center_y - cell_y;
@@ -55,10 +56,10 @@ bool in_circle(
 }
 
 bool new_in_circle(
-        std::uint16_t cell_x,
-        std::uint16_t cell_y,
-        std::uint16_t center_x,
-        std::uint16_t center_y,
+        std::uint32_t cell_x,
+        std::uint32_t cell_y,
+        std::uint32_t center_x,
+        std::uint32_t center_y,
         std::uint32_t rad,
         std::uint16_t ncells_w,
         const std::vector<bool>& already) {
@@ -83,13 +84,13 @@ std::wstring color_radius(
 
     std::vector<wchar_t> builder;
 
-    std::uint16_t rt = (r > cy) ? 0 : cy - r;
-    std::uint16_t rb = ((cy + r) >= ncells_h) ? (ncells_h - 1) : cy + r;
-    std::uint16_t rl = (r > cx) ? 0 : cx - r;
-    std::uint16_t rr = ((cx + r) >= ncells_w) ? (ncells_w - 1) : cx + r;
+    std::uint32_t rt = (r > cy) ? 0 : cy - r;
+    std::uint32_t rb = ((cy + r) >= ncells_h) ? (ncells_h - 1) : cy + r;
+    std::uint32_t rl = (r > cx) ? 0 : cx - r;
+    std::uint32_t rr = ((cx + r) >= ncells_w) ? (ncells_w - 1) : cx + r;
 
-    for(std::uint16_t cell_y = rt; cell_y <= rb; cell_y++) {
-        for (std::uint16_t cell_x = rl; cell_x <= rr; cell_x++) {
+    for(std::uint32_t cell_y = rt; cell_y <= rb; cell_y++) {
+        for (std::uint32_t cell_x = rl; cell_x <= rr; cell_x++) {
             if(is_empty(cell_x, cell_y, width, screen)) continue;
             if(!new_in_circle(cell_x, cell_y, cx, cy, r, ncells_w, colored)) continue;
 
@@ -130,13 +131,13 @@ std::wstring clear_radius(
         std::uint16_t width) {
     std::vector<wchar_t> builder;
 
-    std::uint16_t rt = (r > cy) ? 0 : cy - r;
-    std::uint16_t rb = ((cy + r) >= ncells_h) ? (ncells_h - 1) : cy + r;
-    std::uint16_t rl = (r > cx) ? 0 : cx - r;
-    std::uint16_t rr = ((cx + r) >= ncells_w) ? (ncells_w - 1) : cx + r;
+    std::uint32_t rt = (r > cy) ? 0 : cy - r;
+    std::uint32_t rb = ((cy + r) >= ncells_h) ? (ncells_h - 1) : cy + r;
+    std::uint32_t rl = (r > cx) ? 0 : cx - r;
+    std::uint32_t rr = ((cx + r) >= ncells_w) ? (ncells_w - 1) : cx + r;
 
-    for(std::uint16_t cell_y = rt; cell_y <= rb; cell_y++) {
-        for (std::uint16_t cell_x = rl; cell_x <= rr; cell_x++) {
+    for(std::uint32_t cell_y = rt; cell_y <= rb; cell_y++) {
+        for (std::uint32_t cell_x = rl; cell_x <= rr; cell_x++) {
             if(!in_circle(cell_x, cell_y, cx, cy, r)) continue;
 
             std::wstring go_here_reset = std::format(
@@ -204,7 +205,7 @@ int main() {
 
     // hide cursor
     std::wstring dectcem = L"\033[?25l";
-    WriteConsoleW(conout, dectcem.data(), dectcem.size(), &written, nullptr);
+    WriteConsoleW(conout, dectcem.data(), static_cast<DWORD>(dectcem.size()), &written, nullptr);
 
     // color two-wide cells
     std::uint16_t ncell_w = (width + 1) / 2;
@@ -254,7 +255,7 @@ int main() {
 
         std::wstring whole_command = std::format(L"{}{}", color_cmds, clear_commands);
 
-        WriteConsoleW(conout, whole_command.data(), whole_command.size(), &written, nullptr);
+        WriteConsoleW(conout, whole_command.data(), static_cast<DWORD>(whole_command.size()), &written, nullptr);
 
         r += 1;
         if(r == 8 || r == 12) w += 1;
