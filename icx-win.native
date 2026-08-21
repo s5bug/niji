@@ -1,0 +1,5 @@
+[binaries]
+c = 'C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/compiler/clang-cl.exe'
+cpp = 'C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/compiler/clang-cl.exe'
+c_ld = 'C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/compiler/lld-link.exe'
+cpp_ld = 'C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/compiler/lld-link.exe'
