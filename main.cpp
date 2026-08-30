@@ -168,6 +168,12 @@ std::wstring clear_radius(
 int main() {
     HANDLE conout = GetStdHandle(STD_OUTPUT_HANDLE);
 
+    DWORD consoleMode;
+    if (GetConsoleMode(conout, &consoleMode)) {
+        consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(conout, consoleMode);
+    }
+
     CONSOLE_SCREEN_BUFFER_INFO csbi;
 
     bool i = GetConsoleScreenBufferInfo(conout, &csbi);
