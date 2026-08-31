@@ -9,7 +9,7 @@ based on [the old X68000 niji](https://twitter.com/kata68k/status/17827800991480
 set up release build in `buildDir`:
 ```pwsh
 # using Intel oneAPI
- .\icx-meson.bat setup --native-file icx-win.native buildDir --buildtype=release --strip -Db_lto=true
+ .\icx-meson.cmd setup --native-file icx-win.native buildDir --buildtype=release --strip -Db_lto=true
  # normal Meson
  meson setup buildDir --buildtype=release --strip -Db_lto=true
 ```
@@ -17,7 +17,7 @@ set up release build in `buildDir`:
 compile executable to `buildDir/niji.exe`:
 ```pwsh
 # using Intel oneAPI
-.\icx-meson.bat compile -C buildDir
+.\icx-meson.cmd compile -C buildDir
 # normal Meson
 meson compile -C buildDir
 ```
